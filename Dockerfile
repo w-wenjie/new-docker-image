@@ -1,1 +1,1 @@
-From gcr.io/knative-samples/helloworld-go
+From quay.io/jetstack/cert-manager-cainjector:v0.12.0
