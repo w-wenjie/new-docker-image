@@ -1,1 +1,1 @@
-From kfserving/batcher:v0.4.0
+From gcr.io/kfserving/alibi-explainer:v0.4.1
