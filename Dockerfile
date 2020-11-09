@@ -1,1 +1,1 @@
-From gcr.io/kfserving/pytorchserver:v0.4.1-gpu
+From nvcr.io/nvidia/tritonserver:20.03-py3
