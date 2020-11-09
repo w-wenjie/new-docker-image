@@ -1,1 +1,1 @@
-From gcr.io/kfserving/logger:v0.4.1
+From tensorflow/serving:1.14.0
