@@ -1,1 +1,1 @@
-From nvcr.io/nvidia/tritonserver:20.03-py3
+From gcr.io/kfserving/storage-initializer:v0.4.1
