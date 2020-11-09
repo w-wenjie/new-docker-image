@@ -1,1 +1,1 @@
-From tensorflow/serving:1.14.0
+From tensorflow/serving:1.14.0-gpu
