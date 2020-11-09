@@ -1,1 +1,1 @@
-From quay.io/jetstack/cert-manager-cainjector:v0.12.0
+From kfserving/batcher:v0.4.0
