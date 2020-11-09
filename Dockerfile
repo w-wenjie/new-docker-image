@@ -1,1 +1,1 @@
-From tensorflow/serving:1.14.0-gpu
+From mcr.microsoft.com/onnxruntime/server:v1.0.0
