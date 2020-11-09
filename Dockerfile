@@ -1,1 +1,1 @@
-From mcr.microsoft.com/onnxruntime/server:v1.0.0
+From gcr.io/kfserving/sklearnserver:v0.4.1
