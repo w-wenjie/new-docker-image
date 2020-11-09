@@ -1,1 +1,1 @@
-From gcr.io/kfserving/xgbserver:v0.4.1
+From gcr.io/kfserving/pytorchserver:v0.4.1
