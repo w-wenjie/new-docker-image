@@ -1,1 +1,1 @@
-From gcr.io/kfserving/kfserving-controller:v0.4.1
+From nvcr.io/nvidia/tritonserver:20.09-py3
