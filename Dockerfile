@@ -1,1 +1,1 @@
-From nvcr.io/nvidia/tritonserver:20.09-py3
+From tensorflow/tensorflow:1.14.0-jupyter
