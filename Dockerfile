@@ -1,1 +1,1 @@
-From tensorflow/tensorflow:1.14.0-jupyter
+From gcr.io/google_containers/kube-scheduler-amd64:v1.13.12
