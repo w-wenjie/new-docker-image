@@ -1,1 +1,1 @@
-From gcr.io/google_containers/kube-scheduler-amd64:v1.13.12
+From nvcr.io/nvidia/tritonserver:20.10-py3-clientsdk
