@@ -1,1 +1,1 @@
-From nvcr.io/nvidia/tritonserver:20.09-py3-clientsdk
+From nvcr.io/nvidia/tritonserver:20.06-py3
