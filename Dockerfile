@@ -1,1 +1,1 @@
-From nvcr.io/nvidia/tritonserver:20.06-py3
+From nvcr.io/nvidia/tritonserver:20.08-py3
