@@ -19,7 +19,7 @@ jupyter labextension install @jupyterlab/toc && \
 jupyter labextension install jupyterlab-drawio && \
 jupyter labextension install @lckr/jupyterlab_variableinspector && \
 jupyter labextension install @krassowski/jupyterlab-lsp && \
-jupyter labextension install nbgather && \
+#jupyter labextension install nbgather && \
 jupyter lab build --dev-build=False --minimize=False && \
 git config --global http.sslverify false && \
 git config --global https.sslverify false
