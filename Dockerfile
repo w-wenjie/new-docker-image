@@ -9,14 +9,14 @@ ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
 ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32 && \
 apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends libgl1-mesa-glx vim && \
-pip install jupyterlab==2.2.9 jupyterlab-git python-language-server[all] && \
+pip install jupyterlab==2.2.9 jupyterlab-git python-language-server[python] && \
 apt-get autoclean && \
 find /usr/local/lib/python3.7 -name '*.pyc' -delete && \
 rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 echo 'Asia/Shanghai' >/etc/timezone && \
 jupyter labextension install @jupyterlab/toc && \
-jupyter labextension install jupyterlab-drawio && \
+#jupyter labextension install jupyterlab-drawio && \
 jupyter labextension install @lckr/jupyterlab_variableinspector && \
 jupyter labextension install @krassowski/jupyterlab-lsp && \
 #jupyter labextension install nbgather && \
