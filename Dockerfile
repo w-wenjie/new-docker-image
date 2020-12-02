@@ -1,6 +1,6 @@
 FROM python:3.7
 
-RUN wget https://nodejs.org/dist/v14.15.1/node-v14.15.1-linux-x64.tar.xz -O /usr/local && \
+RUN wget https://nodejs.org/dist/v14.15.1/node-v14.15.1-linux-x64.tar.xz -O /usr/local/node-v14.15.1-linux-x64.tar.xz && \
 tar -xvf /usr/local/node-v14.15.1-linux-x64.tar.xz -C /usr/local && \
 mv /usr/local/node-v14.15.1-linux-x64 /usr/local/nodejs && \
 ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
