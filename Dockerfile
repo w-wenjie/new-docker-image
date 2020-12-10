@@ -25,5 +25,6 @@ RUN git init
 RUN git remote add origin https://github.com/Unity-Technologies/ml-agents.git
 RUN git fetch --depth 1 origin $SHA
 RUN git checkout FETCH_HEAD
+RUN git checkout -b release_10_branch origin/release_10_branch
 RUN pip install -e /ml-agents/ml-agents-envs
 RUN pip install -e /ml-agents/ml-agents
