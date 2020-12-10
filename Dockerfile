@@ -1,26 +1,29 @@
-FROM tensorflow/tensorflow:2.2.1-gpu-py3-jupyter
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
-LABEL author="wwj" description="在阿里云镜像服务里构建jupyterlab基础镜像" version="1.0"
+RUN yes | unminimize
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32 && \
-apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends libgl1-mesa-glx vim wget git && \
-wget -q https://nodejs.org/dist/v14.15.1/node-v14.15.1-linux-x64.tar.xz -O /usr/local/node-v14.15.1-linux-x64.tar.xz && \
-tar -xf /usr/local/node-v14.15.1-linux-x64.tar.xz -C /usr/local > /dev/null && \
-mv /usr/local/node-v14.15.1-linux-x64 /usr/local/nodejs && \
-ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
-ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
-pip install jupyterlab==2.2.9 jupyterlab-git jupyter-lsp python-language-server[all] && \
-apt-get autoclean && \
-find /usr/local/lib/python3.6 -name '*.pyc' -delete && \
-rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
-ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
-echo 'Asia/Shanghai' >/etc/timezone && \
-jupyter labextension install @jupyterlab/toc && \
-jupyter labextension install @lckr/jupyterlab_variableinspector && \
-jupyter labextension install @krassowski/jupyterlab-lsp && \
-# jupyter labextension install jupyterlab-drawio && \
-# jupyter labextension install nbgather && \
-jupyter lab build --dev-build=False --minimize=False && \
-git config --global http.sslverify false && \
-git config --global https.sslverify false
+RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+RUN wget https://packages.cloud.google.com/apt/doc/apt-key.gpg && apt-key add apt-key.gpg
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends wget curl tmux vim git gdebi-core \
+  build-essential python3-pip unzip google-cloud-sdk htop mesa-utils xorg-dev xorg \
+  libglvnd-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev && \
+  wget http://security.ubuntu.com/ubuntu/pool/main/libx/libxfont/libxfont1_1.5.1-1ubuntu0.16.04.4_amd64.deb && \
+  wget http://security.ubuntu.com/ubuntu/pool/universe/x/xorg-server/xvfb_1.18.4-0ubuntu0.10_amd64.deb && \
+  yes | gdebi libxfont1_1.5.1-1ubuntu0.16.04.4_amd64.deb && \
+  yes | gdebi xvfb_1.18.4-0ubuntu0.10_amd64.deb
+RUN python3 -m pip install --upgrade pip
+RUN pip install setuptools==41.0.0
 
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+
+#checkout ml-agents for SHA
+RUN mkdir /ml-agents
+WORKDIR /ml-agents
+ARG SHA
+RUN git init
+RUN git remote add origin https://github.com/Unity-Technologies/ml-agents.git
+RUN git fetch --depth 1 origin $SHA
+RUN git checkout FETCH_HEAD
+RUN pip install -e /ml-agents/ml-agents-envs
+RUN pip install -e /ml-agents/ml-agents
