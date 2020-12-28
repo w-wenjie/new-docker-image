@@ -2,7 +2,7 @@ FROM python:3.8
 # FROM tensorflow/tensorflow:1.15.0-py3-jupyter
 # FROM tensorflow/tensorflow:1.15.0-gpu-py3-jupyter
 # FROM tensorflow/tensorflow:2.2.1-py3-jupyter
-FROM tensorflow/tensorflow:2.2.1-gpu-py3-jupyter
+# FROM tensorflow/tensorflow:2.2.1-gpu-py3-jupyter
 
 LABEL author="wwj" description="在阿里云镜像服务里构建jupyterlab基础镜像" version="1.0"
 
