@@ -15,7 +15,7 @@ ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
 ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
 pip install jupyterlab==2.2.9 jupyterlab-git jupyter-lsp python-language-server[all] && \
 apt-get autoclean && \
-find /usr/local/lib/python3.6 -name '*.pyc' -delete && \
+find /usr/local/lib/python3.8 -name '*.pyc' -delete && \
 rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 echo 'Asia/Shanghai' >/etc/timezone && \
