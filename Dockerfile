@@ -14,7 +14,7 @@ mv /usr/local/node-v14.15.1-linux-x64 /usr/local/nodejs && \
 ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
 ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
 pip install jupyterlab==2.2.9 jupyterlab-git jupyter-lsp python-language-server[all] && \
-pip install torch torchvision
+pip install torch torchvision && \
 apt-get autoclean && \
 find /usr/local/lib/python3.8 -name '*.pyc' -delete && \
 rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
