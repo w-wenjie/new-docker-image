@@ -1,8 +1,9 @@
-FROM python:3.8
+# FROM python:3.8
 # FROM tensorflow/tensorflow:1.15.0-py3-jupyter
 # FROM tensorflow/tensorflow:1.15.0-gpu-py3-jupyter
 # FROM tensorflow/tensorflow:2.2.1-py3-jupyter
 # FROM tensorflow/tensorflow:2.2.1-gpu-py3-jupyter
+FROM nvcr.io/nvidia/cuda:10.2-runtime-ubuntu18.04
 
 LABEL author="wwj" description="在阿里云镜像服务里构建jupyterlab基础镜像" version="1.0"
 
@@ -16,7 +17,7 @@ ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
 pip install jupyterlab==2.2.9 jupyterlab-git jupyter-lsp python-language-server[all] && \
 pip install torch torchvision && \
 apt-get autoclean && \
-find /usr/local/lib/python3.8 -name '*.pyc' -delete && \
+find /usr/local/lib/ -name '*.pyc' -delete && \
 rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 echo 'Asia/Shanghai' >/etc/timezone && \
