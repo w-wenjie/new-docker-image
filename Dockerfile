@@ -15,6 +15,7 @@ mv /usr/local/node-v14.15.1-linux-x64 /usr/local/nodejs && \
 ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
 ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
 pip install jupyterlab==2.2.9 jupyterlab-git jupyter-lsp python-language-server[all] && \
+pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html && \
 apt-get autoclean && \
 find /usr/local/lib/python3.6 -name '*.pyc' -delete && \
 rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
