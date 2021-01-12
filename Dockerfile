@@ -1,7 +1,7 @@
 FROM pytorch/pytorch:1.5.1-cuda10.1-cudnn7-runtime
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV PYTHONPATH /opt/SlowFast/slowfast:$PYTHONPATH
+ENV PYTHONPATH /opt/slowfast:$PYTHONPATH
 
 WORKDIR /opt
 
@@ -14,7 +14,7 @@ pip install -U 'git+https://github.com/facebookresearch/fvcore.git' 'git+https:/
 git clone https://github.com/facebookresearch/detectron2 detectron2_repo && \
 pip install -e detectron2_repo && \
 git clone https://github.com/facebookresearch/slowfast && \
-cd /opt/SlowFast && \
+cd /opt/slowfast && \
 python setup.py build develop
 
 
