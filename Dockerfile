@@ -1,9 +1,9 @@
 FROM pytorch/pytorch:1.5.1-cuda10.1-cudnn7-devel
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV PYTHONPATH /opt/slowfast:$PYTHONPATH
+ENV PYTHONPATH /home/slowfast:$PYTHONPATH
 
-WORKDIR /opt
+WORKDIR /home/slowfast
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y libterm-readkey-perl dialog && \
 apt-get install -y --no-install-recommends make git wget curl gcc build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev libgl1-mesa-glx && \
@@ -14,7 +14,7 @@ pip install -U 'git+https://github.com/facebookresearch/fvcore.git' 'git+https:/
 git clone https://github.com/facebookresearch/detectron2 detectron2_repo && \
 pip install -e detectron2_repo && \
 git clone https://github.com/facebookresearch/slowfast && \
-cd /opt/slowfast && \
+cd /home/slowfast && \
 python setup.py build develop && \
 apt-get autoclean && \
 find /opt/conda/lib/python3.7 -name '*.pyc' -delete && \
