@@ -20,7 +20,7 @@ tar -xf /usr/local/node-v14.15.1-linux-x64.tar.xz -C /usr/local > /dev/null && \
 mv /usr/local/node-v14.15.1-linux-x64 /usr/local/nodejs && \
 ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
 ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
-pip install jupyterlab==2.2.9 notebook==6.1.6 qtconsole==5.0.1 ipywidgets==7.6.3 jupyterlab-git jupyterlab-kite xeus-python && \
+pip install jupyterlab==2.2.9 notebook==6.1.6 qtconsole==5.0.1 ipywidgets==7.6.3 jupyterlab-git jupyter-lsp python-language-server[all] xeus-python && \
 apt-get autoclean && \
 find /usr/local/lib/python3.6 -name '*.pyc' -delete && \
 rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
@@ -28,9 +28,8 @@ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
 echo 'Asia/Shanghai' >/etc/timezone && \
 jupyter labextension install @jupyterlab/toc && \
 jupyter labextension install @lckr/jupyterlab_variableinspector && \
-jupyter labextension install @kiteco/jupyterlab-kite && \
-jupyter labextension install @jupyterlab/debugger \
-# jupyter labextension install @krassowski/jupyterlab-lsp && \
+jupyter labextension install @krassowski/jupyterlab-lsp && \
+jupyter labextension install @jupyterlab/debugger && \
 # jupyter labextension install jupyterlab-drawio && \
 # jupyter labextension install nbgather && \
 jupyter lab build --dev-build=False --minimize=False && \
