@@ -1,21 +1,45 @@
-FROM pytorch/pytorch:1.5.1-cuda10.1-cudnn7-devel
+# FROM python:3.6.9
+FROM tensorflow/tensorflow:1.15.0-py3-jupyter
+# FROM tensorflow/tensorflow:1.15.0-gpu-py3-jupyter
+# FROM tensorflow/tensorflow:2.2.1-py3-jupyter
+# FROM tensorflow/tensorflow:2.2.1-gpu-py3-jupyter
+# FROM nvcr.io/nvidia/cuda:10.2-runtime-ubuntu18.04
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV PYTHONPATH /home/slowfast:$PYTHONPATH
+## 使用cuda基础镜像时需要增加
+## apt-get install -y python3 python3-distutils
+## wget https://bootstrap.pypa.io/get-pip.py -O /tmp/get-pip.py
+## ln -s /usr/bin/python3 /usr/bin/python
+## python /tmp/get-pip.py
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y libterm-readkey-perl dialog && \
-apt-get install -y --no-install-recommends make git wget curl gcc build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev libgl1-mesa-glx && \
-pip install numpy flask opencv-python tensorboard moviepy 'git+https://github.com/facebookresearch/fvcore' simplejson sklearn pandas && \
-conda install -y av -c conda-forge && \
-pip install -U cython && \
-pip install -U 'git+https://github.com/facebookresearch/fvcore.git' 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI' && \
-cd /home && git clone https://github.com/facebookresearch/detectron2 detectron2_repo && \
-pip install -e detectron2_repo && \
-cd /home && git clone https://github.com/facebookresearch/slowfast && \
-cd /home/slowfast && \
-python setup.py build develop && \
+LABEL author="wwj" description="在阿里云镜像服务里构建jupyterlab基础镜像" version="1.0"
+
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32 && \
+apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends libgl1-mesa-glx vim wget git tzdata && \
+wget -q https://nodejs.org/dist/v14.15.1/node-v14.15.1-linux-x64.tar.xz -O /usr/local/node-v14.15.1-linux-x64.tar.xz && \
+tar -xf /usr/local/node-v14.15.1-linux-x64.tar.xz -C /usr/local > /dev/null && \
+mv /usr/local/node-v14.15.1-linux-x64 /usr/local/nodejs && \
+ln -s /usr/local/nodejs/bin/node /usr/bin/node && \
+ln -s /usr/local/nodejs/bin/npm /usr/bin/npm && \
+pip install jupyterlab==2.2.9 notebook==6.1.6 qtconsole==5.0.1 ipywidgets==7.6.3 jupyterlab-git jupyterlab-kite xeus-python && \
 apt-get autoclean && \
-find /opt/conda/lib/python3.7 -name '*.pyc' -delete && \
-rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/*
+find /usr/local/lib/python3.6 -name '*.pyc' -delete && \
+rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/* && \
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+echo 'Asia/Shanghai' >/etc/timezone && \
+jupyter labextension install @jupyterlab/toc && \
+jupyter labextension install @lckr/jupyterlab_variableinspector && \
+jupyter labextension install @kiteco/jupyterlab-kite && \
+jupyter labextension install @jupyterlab/debugger \
+# jupyter labextension install @krassowski/jupyterlab-lsp && \
+# jupyter labextension install jupyterlab-drawio && \
+# jupyter labextension install nbgather && \
+jupyter lab build --dev-build=False --minimize=False && \
+git config --global http.sslverify false && \
+git config --global https.sslverify false
 
-WORKDIR /home/slowfast
+# nbgather: 清理代码，恢复丢失的代码以及比较代码版本的工具。
+# @krassowski/jupyterlab-lsp: 用于自动补全、参数建议、函数文档查询、跳转定义等。
+# @lckr/jupyterlab_variableinspector: 展示代码中的变量及其属性。
+# jupyterlab-drawio: 绘图工具。
+# @jupyterlab/toc: 目录插件
+
