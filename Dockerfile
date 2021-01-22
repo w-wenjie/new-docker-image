@@ -1,4 +1,4 @@
-FROM 10.8.203.113:10443/library/nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
+FROM nvcr.io/nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
 LABEL author="wwj" description="使用ubuntu18.04 + miniconda 构建jupyterlab-gpu-cuda10.0基础镜像" version="1.0"
 
