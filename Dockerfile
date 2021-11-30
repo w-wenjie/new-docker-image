@@ -1,17 +1,16 @@
-FROM flink:1.14.0-scala_2.12-java11
+FROM node:10.16.3
 
-ENV TZ=Asia/Shanghai
+RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends openssh-server tzdata net-tools
+RUN mkdir -p /var/run/sshd /root/.ssh
 
-RUN set -ex; \
-    apt-get update; \
-    apt-get -y install python3; \
-    apt-get -y install python3-pip; \
-    apt-get -y install python3-dev; \
-    ln -sf /usr/bin/python3 /usr/bin/python; \
-    ln -sf /usr/bin/pip3 /usr/bin/pip; \
-    apt-get update; \
-    python -m pip install --upgrade pip
+ENV TZ Asia/Shanghai
 
-RUN pip install apache-flink==1.14.0
+#ADD sshd_config /etc/ssh/sshd_config
+#ADD authorized_keys /root/.ssh/authorized_keys
+#ADD run.sh /run.sh
+RUN echo root:123456 | chpasswd && \
+    mkdir /opt/project && \
+    npm install azure-pipelines-task-lib/task && \
+    npm install azure-pipelines-task-lib/toolrunner
 
-WORKDIR /opt/flink
+ENTRYPOINT ["/usr/sbin/sshd", "-D"]
