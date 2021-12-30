@@ -1,16 +1,47 @@
-FROM node:10.16.3
+FROM nvidia/cuda:9.2-cudnn7-devel-ubuntu16.04
 
-RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends openssh-server tzdata net-tools
-RUN mkdir -p /var/run/sshd /root/.ssh
+RUN rm -f /usr/lib/x86_64-linux-gnu/libnccl_static.a \
+          /usr/lib/x86_64-linux-gnu/libcudnn_static_v7.a
 
-ENV TZ Asia/Shanghai
+# Install package dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        autoconf \
+        automake \
+        libtool \
+        pkg-config \
+        ca-certificates \
+        wget \
+        git \
+        python \
+        python3 \
+        python-dev \
+        python3-dev \
+        libprotobuf-dev \
+        protobuf-compiler \
+        cmake \
+        swig \
+    && rm -rf /var/lib/apt/lists/*
 
-#ADD sshd_config /etc/ssh/sshd_config
-#ADD authorized_keys /root/.ssh/authorized_keys
-#ADD run.sh /run.sh
-RUN echo root:123456 | chpasswd && \
-    mkdir /opt/project && \
-    npm install azure-pipelines-task-lib/task && \
-    npm install azure-pipelines-task-lib/toolrunner
+# Install pip
+RUN cd /usr/local/src && \
+    wget https://bootstrap.pypa.io/get-pip.py && \
+    python2 get-pip.py && \
+    pip2 install --upgrade pip && \
+    python3 get-pip.py && \
+    pip3 install --upgrade pip && \
+    rm -f get-pip.py
 
-ENTRYPOINT ["/usr/sbin/sshd", "-D"]
+# Build and install onnx
+RUN cd /usr/local/src && \
+    git clone --recurse-submodules https://github.com/onnx/onnx.git && \
+    cd onnx && \
+    git checkout dee6d89 && \
+    pip2 install pybind11 && \
+    pip2 install protobuf && \
+    pip2 install numpy && \
+    pip3 install numpy && \
+    python setup.py build && \
+    python setup.py install && \
+    cd ../ && \
+    rm -rf onnx/
+
