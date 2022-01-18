@@ -176,7 +176,7 @@ RUN mkdir /tmp/openmpi && \
 
 
 # Install OpenSSH for MPI to communicate between containers
-RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
+RUN apt-get update && apt-get install -y --no-install-recommends openssh-client openssh-server && \
     mkdir -p /var/run/sshd
 
 # Allow OpenSSH to talk to containers without asking for confirmation
