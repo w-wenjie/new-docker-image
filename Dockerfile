@@ -191,7 +191,7 @@ RUN git clone -b develop-horovod https://github.com/Unity-Technologies/ml-agents
     pip install -e .  && \
     cd /opt/ml-agents-develop-horovod/ml-agents && \
     pip install -e . && \
-    chmod +x /opt/unity-volume/*.x86_64
+    chmod +x /opt/ml-agents-develop-horovod/unity-volume/*.x86_64
 
 # Install Horovod, temporarily using CUDA stubs
 RUN ldconfig /usr/local/cuda-9.0/targets/x86_64-linux/lib/stubs && \
