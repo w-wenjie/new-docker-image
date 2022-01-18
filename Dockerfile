@@ -151,6 +151,16 @@ RUN pip install numpy \
         keras \
         h5py
 
+# setup google-cloud-sdk, which is used to copy files to gcs after the training is finished
+RUN apt-get install --yes --no-install-recommends \
+    ca-certificates \
+    curl \
+  && echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
+  && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+  && apt-get update \
+  && apt-get install --yes google-cloud-sdk \
+  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Install Open MPI
 RUN mkdir /tmp/openmpi && \
     cd /tmp/openmpi && \
@@ -164,37 +174,28 @@ RUN mkdir /tmp/openmpi && \
     rm -rf /tmp/openmpi
 
 
-# Install Horovod, temporarily using CUDA stubs
-RUN ldconfig /usr/local/cuda-9.0/targets/x86_64-linux/lib/stubs && \
-    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 pip install --no-cache-dir horovod && \
-    ldconfig
-
-# Install OpenSSH for MPI to communicate between containers
-RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
-    mkdir -p /var/run/sshd
-
-# Allow OpenSSH to talk to containers without asking for confirmation
-RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
-    echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config.new && \
-    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
-
-
-WORKDIR /opt
-RUN git clone -b develop-horovod https://github.com/Unity-Technologies/ml-agents.git ml-agents-develop-horovod && \
-    cd /opt/ml-agents-develop-horovod/ml-agents-envs && \
-    pip install -e .  && \
-    cd /opt/ml-agents-develop-horovod/ml-agents && \
-    pip install -e . && \
-    chmod +x /opt/unity-volume/*.x86_64
-
-# setup google-cloud-sdk, which is used to copy files to gcs after the training is finished
-RUN apt-get install --yes --no-install-recommends \
-    ca-certificates \
-    curl \
-  && echo "deb http://packages.cloud.google.com/apt cloud-sdk-xenial main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
-  && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-  && apt-get update \
-  && apt-get install --yes google-cloud-sdk \
-  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+## Install Horovod, temporarily using CUDA stubs
+#RUN ldconfig /usr/local/cuda-9.0/targets/x86_64-linux/lib/stubs && \
+#    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 pip install --no-cache-dir horovod && \
+#    ldconfig
+#
+## Install OpenSSH for MPI to communicate between containers
+#RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
+#    mkdir -p /var/run/sshd
+#
+## Allow OpenSSH to talk to containers without asking for confirmation
+#RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
+#    echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config.new && \
+#    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
+#
+#
+#WORKDIR /opt
+#RUN git clone -b develop-horovod https://github.com/Unity-Technologies/ml-agents.git ml-agents-develop-horovod && \
+#    cd /opt/ml-agents-develop-horovod/ml-agents-envs && \
+#    pip install -e .  && \
+#    cd /opt/ml-agents-develop-horovod/ml-agents && \
+#    pip install -e . && \
+#    chmod +x /opt/unity-volume/*.x86_64
+#
 
 CMD ["/bin/bash"]
