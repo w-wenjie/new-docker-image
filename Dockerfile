@@ -1,4 +1,5 @@
-FROM nvidia/cudagl:9.0-devel-ubuntu16.04
+#FROM nvidia/cudagl:9.0-devel-ubuntu16.04
+FROM nvcr.io/nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 
 # TensorFlow version is tightly coupled to CUDA and cuDNN so it should be selected carefully
 ENV TENSORFLOW_VERSION=1.12.0
@@ -174,28 +175,27 @@ RUN mkdir /tmp/openmpi && \
     rm -rf /tmp/openmpi
 
 
-## Install Horovod, temporarily using CUDA stubs
-#RUN ldconfig /usr/local/cuda-9.0/targets/x86_64-linux/lib/stubs && \
-#    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 pip install --no-cache-dir horovod && \
-#    ldconfig
-#
-## Install OpenSSH for MPI to communicate between containers
-#RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
-#    mkdir -p /var/run/sshd
-#
-## Allow OpenSSH to talk to containers without asking for confirmation
-#RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
-#    echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config.new && \
-#    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
-#
-#
-#WORKDIR /opt
-#RUN git clone -b develop-horovod https://github.com/Unity-Technologies/ml-agents.git ml-agents-develop-horovod && \
-#    cd /opt/ml-agents-develop-horovod/ml-agents-envs && \
-#    pip install -e .  && \
-#    cd /opt/ml-agents-develop-horovod/ml-agents && \
-#    pip install -e . && \
-#    chmod +x /opt/unity-volume/*.x86_64
-#
+# Install OpenSSH for MPI to communicate between containers
+RUN apt-get install -y --no-install-recommends openssh-client openssh-server && \
+    mkdir -p /var/run/sshd
+
+# Allow OpenSSH to talk to containers without asking for confirmation
+RUN cat /etc/ssh/ssh_config | grep -v StrictHostKeyChecking > /etc/ssh/ssh_config.new && \
+    echo "    StrictHostKeyChecking no" >> /etc/ssh/ssh_config.new && \
+    mv /etc/ssh/ssh_config.new /etc/ssh/ssh_config
+
+
+WORKDIR /opt
+RUN git clone -b develop-horovod https://github.com/Unity-Technologies/ml-agents.git ml-agents-develop-horovod && \
+    cd /opt/ml-agents-develop-horovod/ml-agents-envs && \
+    pip install -e .  && \
+    cd /opt/ml-agents-develop-horovod/ml-agents && \
+    pip install -e . && \
+    chmod +x /opt/unity-volume/*.x86_64
+
+# Install Horovod, temporarily using CUDA stubs
+RUN ldconfig /usr/local/cuda-9.0/targets/x86_64-linux/lib/stubs && \
+    HOROVOD_GPU_ALLREDUCE=NCCL HOROVOD_WITH_TENSORFLOW=1 pip install --no-cache-dir horovod && \
+    ldconfig
 
 CMD ["/bin/bash"]
