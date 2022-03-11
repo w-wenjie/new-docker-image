@@ -17,12 +17,10 @@ RUN pip install setuptools==41.0.0
 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 #checkout ml-agents for SHA
-RUN mkdir /ml-agents
+WORKDIR /
+#ARG SHA
+RUN git clone -b release_18 https://github.com/Unity-Technologies/ml-agents.git
+
 WORKDIR /ml-agents
-ARG SHA
-RUN git init
-RUN git remote add origin https://github.com/Unity-Technologies/ml-agents.git -b release_18
-RUN git fetch --depth 1 origin $SHA
-RUN git checkout FETCH_HEAD
 RUN pip install -e /ml-agents/ml-agents-envs
 RUN pip install -e /ml-agents/ml-agents
